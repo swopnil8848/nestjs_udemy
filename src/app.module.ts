@@ -36,6 +36,7 @@ import { ConfigModule,ConfigService } from '@nestjs/config';
     //   // Don't use synchronize:true in production
     //   synchronize: true,
     // }),
+    TypeOrmModule.forRoot(),
     UsersModule,
     ReportsModule,
   ],
@@ -52,11 +53,12 @@ import { ConfigModule,ConfigService } from '@nestjs/config';
 })
 
 export class AppModule {
+  constructor(private configServie:ConfigService){}
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(
         cookieSession({
-          keys: ['asdfasfd'], // Replace this with a secure key in production
+          keys: [this.configServie.get('COOKIE_KEY')], // Replace this with a secure key in production
         }),
       )
       .forRoutes('*');

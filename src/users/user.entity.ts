@@ -1,6 +1,9 @@
 import { IsEmail, IsNotEmpty } from "class-validator";
-import {AfterInsert,AfterRemove,AfterUpdate, Entity,Column,PrimaryGeneratedColumn } from "typeorm";
+import { Report } from "src/reports/report.entity";
+import {AfterInsert,AfterRemove,AfterUpdate, Entity,Column,PrimaryGeneratedColumn, OneToMany } from "typeorm";
 // import { Exclude } from "class-transformer";
+
+// console.log(Report)
 
 @Entity()
 export class User{
@@ -14,6 +17,13 @@ export class User{
     @Column()
     // @Exclude()
     password:string;
+
+    @Column({default:true})
+    admin:boolean;
+
+    // gitdy g
+    @OneToMany(()=>Report,(report)=>report.user)
+    reports:Report[];
 
     @AfterInsert()
     logInsert(){
